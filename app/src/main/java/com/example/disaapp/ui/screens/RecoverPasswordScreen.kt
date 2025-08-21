@@ -61,7 +61,7 @@ fun RecoverPasswordScreen(navController: NavController) {
             )
 
             Button(
-                onClick = { /* TODO: Handle password recovery */ },
+                onClick = { /* TODO: hacer el recoveri */ },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 16.dp)
