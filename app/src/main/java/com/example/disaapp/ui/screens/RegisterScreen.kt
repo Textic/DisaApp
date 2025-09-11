@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.disaapp.data.User
+import com.example.disaapp.model.User
 import com.example.disaapp.ui.theme.DisaAppTheme
 import com.example.disaapp.viewmodel.AuthViewModel
 

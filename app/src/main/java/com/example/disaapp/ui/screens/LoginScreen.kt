@@ -62,7 +62,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
                 val success = authViewModel.login(email, password)
                 if (success) {
                     Toast.makeText(context, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show()
-                    // TODO: hacer la pantalla de inicio
+                    navController.navigate("home")
                 } else {
                     Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.disaapp.ui.screens.HomeScreen
 import com.example.disaapp.ui.screens.LoginScreen
 import com.example.disaapp.ui.screens.RecoverPasswordScreen
 import com.example.disaapp.ui.screens.RegisterScreen
@@ -23,6 +24,9 @@ fun AppNavigation() {
         }
         composable("recover_password") {
             RecoverPasswordScreen(navController = navController)
+        }
+        composable("home") {
+            HomeScreen()
         }
     }
 }
