@@ -25,7 +25,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.disaapp.ui.theme.DisaAppTheme
+import com.example.disaapp.utils.isValidEmail
+import com.example.disaapp.utils.isValidPassword
 import com.example.disaapp.viewmodel.AuthViewModel
+import com.example.disaapp.viewmodel.LoginResult
 
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
@@ -59,12 +62,26 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
 
         Button(
             onClick = {
-                val success = authViewModel.login(email, password)
-                if (success) {
-                    Toast.makeText(context, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show()
-                    navController.navigate("home")
-                } else {
-                    Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                if (!isValidEmail(email)) {
+                    Toast.makeText(context, "Formato de correo invalido.", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+                if (!isValidPassword(password)) {
+                    Toast.makeText(context, "La contraseña debe tener al menos 6 caracteres.", Toast.LENGTH_SHORT).show()
+                    return@Button
+                }
+
+                when (authViewModel.login(email, password)) {
+                    is LoginResult.Success -> {
+                        Toast.makeText(context, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show()
+                        navController.navigate("home")
+                    }
+                    is LoginResult.InactiveUser -> {
+                        Toast.makeText(context, "El usuario esta inactivo.", Toast.LENGTH_SHORT).show()
+                    }
+                    is LoginResult.WrongCredentials -> {
+                        Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             modifier = Modifier

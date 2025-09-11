@@ -23,7 +23,7 @@ fun AppNavigation() {
             RegisterScreen(navController = navController, authViewModel = authViewModel)
         }
         composable("recover_password") {
-            RecoverPasswordScreen(navController = navController)
+            RecoverPasswordScreen(navController = navController, authViewModel = authViewModel)
         }
         composable("home") {
             HomeScreen()

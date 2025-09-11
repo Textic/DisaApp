@@ -32,6 +32,8 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.disaapp.model.User
 import com.example.disaapp.ui.theme.DisaAppTheme
+import com.example.disaapp.utils.isValidEmail
+import com.example.disaapp.utils.isValidPassword
 import com.example.disaapp.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,16 +103,29 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             Button(
                 onClick = {
-                    if (password == confirmPassword) {
-                        val success = authViewModel.register(User(fullName, email, password))
-                        if (success) {
-                            Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        } else {
-                            Toast.makeText(context, "El usuario ya existe", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
+                    if (fullName.isBlank()) {
+                        Toast.makeText(context, "El nombre no puede estar vacio.", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+                    if (!isValidEmail(email)) {
+                        Toast.makeText(context, "Formato de correo invalido.", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+                    if (!isValidPassword(password)) {
+                        Toast.makeText(context, "La contraseña debe tener al menos 6 caracteres.", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+                    if (password != confirmPassword) {
                         Toast.makeText(context, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    val success = authViewModel.register(User(fullName, email, password))
+                    if (success) {
+                        Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                        navController.popBackStack()
+                    } else {
+                        Toast.makeText(context, "El usuario ya existe", Toast.LENGTH_SHORT).show()
                     }
                 },
                 modifier = Modifier
