@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,75 +30,98 @@ import com.example.disaapp.ui.theme.DisaAppTheme
 import com.example.disaapp.utils.isValidEmail
 import com.example.disaapp.utils.isValidPassword
 import com.example.disaapp.viewmodel.AuthViewModel
+import androidx.compose.runtime.rememberCoroutineScope
 import com.example.disaapp.viewmodel.LoginResult
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Correo") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
-            label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp)
-        )
-
-        Button(
-            onClick = {
-                if (!isValidEmail(email)) {
-                    Toast.makeText(context, "Formato de correo invalido.", Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
-                if (!isValidPassword(password)) {
-                    Toast.makeText(context, "La contraseña debe tener al menos 6 caracteres.", Toast.LENGTH_SHORT).show()
-                    return@Button
-                }
-
-                when (authViewModel.login(email, password)) {
-                    is LoginResult.Success -> {
-                        Toast.makeText(context, "Inicio de sesion exitoso", Toast.LENGTH_SHORT).show()
-                        navController.navigate("home")
-                    }
-                    is LoginResult.InactiveUser -> {
-                        Toast.makeText(context, "El usuario esta inactivo.", Toast.LENGTH_SHORT).show()
-                    }
-                    is LoginResult.WrongCredentials -> {
-                        Toast.makeText(context, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Iniciar sesion")
-        }
+            OutlinedTextField(
+                value = email,
+                onValueChange = { email = it },
+                label = { Text("Correo") },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-        TextButton(onClick = { navController.navigate("register") }) {
-            Text("No tienes cuenta? Registrate")
-        }
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = { Text("Contraseña") },
+                visualTransformation = PasswordVisualTransformation(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
 
-        TextButton(onClick = { navController.navigate("recover_password") }) {
-            Text("Olvidaste tu contraseña?")
+            Button(
+                onClick = {
+                    if (!isValidEmail(email)) {
+                        Toast.makeText(context, "Formato de correo invalido.", Toast.LENGTH_SHORT)
+                            .show()
+                        return@Button
+                    }
+                    if (!isValidPassword(password)) {
+                        Toast.makeText(
+                            context,
+                            "La contraseña debe tener al menos 6 caracteres.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@Button
+                    }
+
+                    scope.launch {
+                        when (authViewModel.login(email, password)) {
+                            is LoginResult.Success -> {
+                                Toast.makeText(context, "Inicio de sesion exitoso", Toast.LENGTH_SHORT)
+                                    .show()
+                                navController.navigate("home")
+                            }
+
+                            is LoginResult.InactiveUser -> {
+                                Toast.makeText(context, "El usuario esta inactivo.", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+
+                            is LoginResult.WrongCredentials -> {
+                                Toast.makeText(
+                                    context,
+                                    "Correo o contraseña incorrectos",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text("Iniciar sesion")
+            }
+
+            TextButton(onClick = { navController.navigate("register") }) {
+                Text("No tienes cuenta? Registrate")
+            }
+
+            TextButton(onClick = { navController.navigate("recover_password") }) {
+                Text("Olvidaste tu contraseña?")
+            }
         }
     }
 }

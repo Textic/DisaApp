@@ -34,13 +34,15 @@ import androidx.navigation.compose.rememberNavController
 import com.example.disaapp.ui.theme.DisaAppTheme
 import com.example.disaapp.viewmodel.AuthViewModel
 
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecoverPasswordScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
     var email by remember { mutableStateOf("") }
-    var newPassword by remember { mutableStateOf("") }
-    var passwordFieldVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -67,56 +69,24 @@ fun RecoverPasswordScreen(navController: NavController, authViewModel: AuthViewM
                 onValueChange = { email = it },
                 label = { Text("Ingresa tu correo") },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !passwordFieldVisible
             )
 
-            AnimatedVisibility(visible = !passwordFieldVisible) {
-                Button(
-                    onClick = {
-                        if (authViewModel.checkEmailExists(email)) {
-                            passwordFieldVisible = true
-                            Toast.makeText(context, "Correo encontrado. Ingresa tu nueva contraseña.", Toast.LENGTH_SHORT).show()
+            Button(
+                onClick = {
+                    scope.launch {
+                        if (authViewModel.resetPassword(email)) {
+                            Toast.makeText(context, "Se ha enviado un correo para restablecer tu contraseña.", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
                         } else {
-                            Toast.makeText(context, "Correo no encontrado.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "Error al enviar el correo.", Toast.LENGTH_SHORT).show()
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                ) {
-                    Text("Verificar correo")
-                }
-            }
-
-            AnimatedVisibility(visible = passwordFieldVisible) {
-                Column {
-                    OutlinedTextField(
-                        value = newPassword,
-                        onValueChange = { newPassword = it },
-                        label = { Text("Nueva Contraseña") },
-                        visualTransformation = PasswordVisualTransformation(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp)
-                    )
-
-                    Button(
-                        onClick = {
-                            if (authViewModel.resetPassword(email, newPassword)) {
-                                Toast.makeText(context, "Contraseña cambiada exitosamente.", Toast.LENGTH_SHORT).show()
-                                navController.popBackStack()
-                            } else {
-                                // Esto no deberia pasar si el email ya fue verificado
-                                Toast.makeText(context, "Error al cambiar la contraseña.", Toast.LENGTH_SHORT).show()
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                    ) {
-                        Text("Cambiar Contraseña")
                     }
-                }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text("Recuperar contraseña")
             }
         }
     }

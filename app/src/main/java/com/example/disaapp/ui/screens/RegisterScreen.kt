@@ -30,11 +30,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.disaapp.model.User
+import androidx.compose.runtime.rememberCoroutineScope
 import com.example.disaapp.ui.theme.DisaAppTheme
+import com.example.disaapp.viewmodel.AuthViewModel
+import kotlinx.coroutines.launch
+
 import com.example.disaapp.utils.isValidEmail
 import com.example.disaapp.utils.isValidPassword
-import com.example.disaapp.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,6 +46,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -120,12 +123,14 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
                         return@Button
                     }
 
-                    val success = authViewModel.register(User(fullName, email, password))
-                    if (success) {
-                        Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                        navController.popBackStack()
-                    } else {
-                        Toast.makeText(context, "El usuario ya existe", Toast.LENGTH_SHORT).show()
+                    scope.launch {
+                        val success = authViewModel.register(email, password)
+                        if (success) {
+                            Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                            navController.popBackStack()
+                        } else {
+                            Toast.makeText(context, "El usuario ya existe", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 },
                 modifier = Modifier
