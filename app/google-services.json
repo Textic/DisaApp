@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "845196078772",
+    "project_id": "disaapp-88dc5",
+    "storage_bucket": "disaapp-88dc5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845196078772:android:a6802dec2d98d2935131e1",
+        "android_client_info": {
+          "package_name": "com.example.disaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845196078772-emi47not08llppgm2pfmem3dtpkbdile.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkdIY7L9E86MumJqPJVxVwd97Rh0nWGVU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845196078772-emi47not08llppgm2pfmem3dtpkbdile.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
