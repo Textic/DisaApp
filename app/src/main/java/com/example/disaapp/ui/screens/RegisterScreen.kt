@@ -37,6 +37,7 @@ import kotlinx.coroutines.launch
 
 import com.example.disaapp.utils.isValidEmail
 import com.example.disaapp.utils.isValidPassword
+import com.example.disaapp.viewmodel.RegistrationResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -124,12 +125,17 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
                     }
 
                     scope.launch {
-                        val success = authViewModel.register(email, password)
-                        if (success) {
-                            Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        } else {
-                            Toast.makeText(context, "El usuario ya existe", Toast.LENGTH_SHORT).show()
+                        when (val result = authViewModel.register(fullName, email, password)) {
+                            is RegistrationResult.Success -> {
+                                Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                                navController.popBackStack()
+                            }
+                            is RegistrationResult.EmailAlreadyExists -> {
+                                Toast.makeText(context, "El correo electrónico ya está en uso.", Toast.LENGTH_SHORT).show()
+                            }
+                            is RegistrationResult.Error -> {
+                                Toast.makeText(context, "Error en el registro: ${result.message}", Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
                 },
