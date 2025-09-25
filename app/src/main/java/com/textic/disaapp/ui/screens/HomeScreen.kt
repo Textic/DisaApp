@@ -1,4 +1,4 @@
-package com.example.disaapp.ui.screens
+package com.textic.disaapp.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.disaapp"
+    namespace = "com.textic.disaapp"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.disaapp"
+        applicationId = "com.textic.disaapp"
         minSdk = 34
         targetSdk = 36
         versionCode = 1

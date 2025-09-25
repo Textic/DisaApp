@@ -1,7 +1,6 @@
-package com.example.disaapp.ui.screens
+package com.textic.disaapp.ui.screens
 
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,14 +24,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.disaapp.ui.theme.DisaAppTheme
-import com.example.disaapp.viewmodel.AuthViewModel
+import com.textic.disaapp.ui.theme.DisaAppTheme
+import com.textic.disaapp.viewmodel.AuthViewModel
 
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch

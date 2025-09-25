@@ -1,4 +1,4 @@
-package com.example.disaapp.ui.screens
+package com.textic.disaapp.ui.screens
 
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -38,21 +38,18 @@ import androidx.credentials.GetCredentialRequest
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.disaapp.R
-import com.example.disaapp.ui.theme.DisaAppTheme
-import com.example.disaapp.utils.isValidEmail
-import com.example.disaapp.utils.isValidPassword
-import com.example.disaapp.viewmodel.AuthViewModel
+import com.textic.disaapp.R
+import com.textic.disaapp.ui.theme.DisaAppTheme
+import com.textic.disaapp.utils.isValidEmail
+import com.textic.disaapp.utils.isValidPassword
+import com.textic.disaapp.viewmodel.AuthViewModel
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.credentials.CustomCredential
-import com.example.disaapp.viewmodel.LoginResult
+import com.textic.disaapp.viewmodel.LoginResult
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
 import androidx.credentials.exceptions.GetCredentialException
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 
 @Composable

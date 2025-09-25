@@ -1,4 +1,4 @@
-package com.example.disaapp.utils
+package com.textic.disaapp.utils
 
 import android.util.Patterns
 

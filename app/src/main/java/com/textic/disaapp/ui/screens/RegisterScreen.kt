@@ -1,4 +1,4 @@
-package com.example.disaapp.ui.screens
+package com.textic.disaapp.ui.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -31,13 +31,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.disaapp.ui.theme.DisaAppTheme
-import com.example.disaapp.viewmodel.AuthViewModel
+import com.textic.disaapp.ui.theme.DisaAppTheme
+import com.textic.disaapp.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
 
-import com.example.disaapp.utils.isValidEmail
-import com.example.disaapp.utils.isValidPassword
-import com.example.disaapp.viewmodel.RegistrationResult
+import com.textic.disaapp.utils.isValidEmail
+import com.textic.disaapp.utils.isValidPassword
+import com.textic.disaapp.viewmodel.RegistrationResult
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

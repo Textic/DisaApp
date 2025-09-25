@@ -1,4 +1,4 @@
-package com.example.disaapp.viewmodel
+package com.textic.disaapp.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

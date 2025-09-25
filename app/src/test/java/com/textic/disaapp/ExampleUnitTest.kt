@@ -1,4 +1,4 @@
-package com.example.disaapp
+package com.textic.disaapp
 
 import org.junit.Test
 

@@ -1,15 +1,15 @@
-package com.example.disaapp.ui.navigation
+package com.textic.disaapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.disaapp.ui.screens.HomeScreen
-import com.example.disaapp.ui.screens.LoginScreen
-import com.example.disaapp.ui.screens.RecoverPasswordScreen
-import com.example.disaapp.ui.screens.RegisterScreen
-import com.example.disaapp.viewmodel.AuthViewModel
+import com.textic.disaapp.ui.screens.HomeScreen
+import com.textic.disaapp.ui.screens.LoginScreen
+import com.textic.disaapp.ui.screens.RecoverPasswordScreen
+import com.textic.disaapp.ui.screens.RegisterScreen
+import com.textic.disaapp.viewmodel.AuthViewModel
 
 @Composable
 fun AppNavigation() {

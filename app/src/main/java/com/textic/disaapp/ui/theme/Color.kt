@@ -1,4 +1,4 @@
-package com.example.disaapp.ui.theme
+package com.textic.disaapp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
