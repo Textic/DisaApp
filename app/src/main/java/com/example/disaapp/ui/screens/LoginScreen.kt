@@ -1,5 +1,7 @@
 package com.example.disaapp.ui.screens
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,10 +44,16 @@ import com.example.disaapp.utils.isValidEmail
 import com.example.disaapp.utils.isValidPassword
 import com.example.disaapp.viewmodel.AuthViewModel
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.credentials.CustomCredential
 import com.example.disaapp.viewmodel.LoginResult
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
+import androidx.credentials.exceptions.GetCredentialException
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 
 @Composable
 fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
@@ -133,12 +141,12 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
             OutlinedButton(
                 onClick = {
                     val credentialManager = CredentialManager.create(context)
-                    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                        .setFilterByAuthorizedAccounts(false)
+                    val googleIdOption = GetGoogleIdOption.Builder()
+                        .setFilterByAuthorizedAccounts(true)
                         .setServerClientId(context.getString(R.string.default_web_client_id))
                         .build()
 
-                    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+                    val request = GetCredentialRequest.Builder()
                         .addCredentialOption(googleIdOption)
                         .build()
 
@@ -146,24 +154,32 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
                         try {
                             val result = credentialManager.getCredential(context, request)
                             val credential = result.credential
-                            if (credential is GoogleIdTokenCredential) {
-                                val googleIdToken = credential.idToken
-                                when (authViewModel.signInWithGoogle(googleIdToken)) {
-                                    is LoginResult.Success -> {
-                                        Toast.makeText(context, "Inicio de sesión con Google exitoso", Toast.LENGTH_SHORT).show()
-                                        navController.navigate("home") {
-                                            popUpTo("login") { inclusive = true }
+                            if (credential is CustomCredential && credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                                val googleIdToken = googleIdTokenCredential.idToken
+                                scope.launch {
+                                    when (authViewModel.signInWithGoogle(googleIdToken)) {
+                                        is LoginResult.Success -> {
+                                            Toast.makeText(context, "Inicio de sesión con Google exitoso", Toast.LENGTH_SHORT).show()
+                                            navController.navigate("home") {
+                                                popUpTo("login") { inclusive = true }
+                                            }
                                         }
-                                    }
-                                    else -> {
-                                        Toast.makeText(context, "Error al iniciar sesión con Google.", Toast.LENGTH_SHORT).show()
+                                        else -> {
+                                            Toast.makeText(context, "Error al iniciar sesión con Google.", Toast.LENGTH_SHORT).show()
+                                        }
                                     }
                                 }
                             } else {
+                                Log.w(TAG, "Credential is not of type Google ID!")
                                 Toast.makeText(context, "Error: No se pudo obtener la credencial de Google.", Toast.LENGTH_SHORT).show()
                             }
-                        } catch (e: Exception) {
+                        } catch (e: GetCredentialException) {
+                            Log.e("LoginScreen", "Error al obtener la credencial de Google", e)
                             Toast.makeText(context, "Error en el inicio de sesión con Google: ${e.message}", Toast.LENGTH_LONG).show()
+                        } catch (e: Exception) {
+                            Log.e("LoginScreen", "Error inesperado en el inicio de sesión con Google", e)
+                            Toast.makeText(context, "Error inesperado: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                     }
                 },
