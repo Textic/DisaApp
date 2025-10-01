@@ -31,7 +31,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.textic.disaapp.ui.theme.DisaAppTheme
 import com.textic.disaapp.viewmodel.AuthViewModel
-
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
 
@@ -64,7 +63,7 @@ fun RecoverPasswordScreen(navController: NavController, authViewModel: AuthViewM
         ) {
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { it -> email = it },
                 label = { Text("Ingresa tu correo") },
                 modifier = Modifier.fillMaxWidth(),
             )

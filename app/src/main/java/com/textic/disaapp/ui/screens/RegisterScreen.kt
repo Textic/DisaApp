@@ -34,7 +34,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import com.textic.disaapp.ui.theme.DisaAppTheme
 import com.textic.disaapp.viewmodel.AuthViewModel
 import kotlinx.coroutines.launch
-
 import com.textic.disaapp.utils.isValidEmail
 import com.textic.disaapp.utils.isValidPassword
 import com.textic.disaapp.viewmodel.RegistrationResult
@@ -71,14 +70,14 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
         ) {
             OutlinedTextField(
                 value = fullName,
-                onValueChange = { fullName = it },
+                onValueChange = { it -> fullName = it },
                 label = { Text("Nombre Completo") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
                 value = email,
-                onValueChange = { email = it },
+                onValueChange = { it -> email = it },
                 label = { Text("Correo") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -87,7 +86,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             OutlinedTextField(
                 value = password,
-                onValueChange = { password = it },
+                onValueChange = { it -> password = it },
                 label = { Text("Contraseña") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier
@@ -97,7 +96,7 @@ fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             OutlinedTextField(
                 value = confirmPassword,
-                onValueChange = { confirmPassword = it },
+                onValueChange = { it -> confirmPassword = it },
                 label = { Text("Confirmar Contraseña") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier

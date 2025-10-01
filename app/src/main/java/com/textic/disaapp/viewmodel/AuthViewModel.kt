@@ -8,6 +8,8 @@ import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.tasks.await
 
 sealed class LoginResult {
@@ -22,6 +24,11 @@ sealed class RegistrationResult {
     object EmailAlreadyExists : RegistrationResult()
 }
 
+sealed class DeleteAccountResult {
+    object Success : DeleteAccountResult()
+    data class Error(val message: String) : DeleteAccountResult()
+}
+
 data class User(
     val name: String = "",
     val email: String = ""
@@ -31,6 +38,15 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = Firebase.auth
     private val db = Firebase.firestore
+
+    private val _user = MutableStateFlow(auth.currentUser)
+    val user: StateFlow<com.google.firebase.auth.FirebaseUser?> = _user
+
+    init {
+        auth.addAuthStateListener {
+            _user.value = it.currentUser
+        }
+    }
 
     suspend fun register(name: String, email: String, pass: String): RegistrationResult {
         return try {
@@ -83,9 +99,27 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    suspend fun deleteAccount(): DeleteAccountResult {
+        return try {
+            val firebaseUser = auth.currentUser
+            if (firebaseUser != null) {
+                db.collection("users").document(firebaseUser.uid).delete().await()
+                firebaseUser.delete().await()
+            }
+            DeleteAccountResult.Success
+        } catch (e: Exception) {
+            Log.e("AuthViewModel", "Delete account failed: ${e.message}", e)
+            DeleteAccountResult.Error(e.message ?: "An unknown error occurred.")
+        }
+    }
+
     //TODO: Implement checkEmailExists
     fun checkEmailExists(email: String): Boolean {
         return false
+    }
+
+    fun logout() {
+        auth.signOut()
     }
 
     suspend fun resetPassword(email: String): Boolean {
@@ -93,6 +127,7 @@ class AuthViewModel : ViewModel() {
             auth.sendPasswordResetEmail(email).await()
             true
         } catch (e: Exception) {
+            Log.e("AuthViewModel", "Error resetting password", e)
             false
         }
     }
