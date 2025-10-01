@@ -1,0 +1,37 @@
+digraph "Desarrollo de Aplicaciones Móviles" {
+  graph [label="Desarrollo de Aplicaciones Móviles", labelloc=t, fontsize=20, rankdir=TB];
+  node [shape=box, style=rounded];
+
+  "Proyecto DisaApp" [style="rounded,filled", fillcolor=lightcoral];
+
+  "1.0 Gestión del Proyecto" [style="rounded,filled", fillcolor=orange];
+  "2.0 Diseño de la App" [style="rounded,filled", fillcolor=orange];
+  "3.0 Desarrollo Prototipo" [style="rounded,filled", fillcolor=orange];
+  "4.0 Pruebas y Entrega" [style="rounded,filled", fillcolor=orange];
+
+  "1.1 Planificación Inicial" [style="rounded,filled", fillcolor=khaki];
+  "1.2 Documentación" [style="rounded,filled", fillcolor=khaki];
+  "2.1 Diseño UI" [style="rounded,filled", fillcolor=khaki];
+  "2.2 Diseño UX" [style="rounded,filled", fillcolor=khaki];
+  "3.1 Configuración" [style="rounded,filled", fillcolor=khaki];
+  "3.2 Desarrollo Auth" [style="rounded,filled", fillcolor=khaki];
+  "4.1 Pruebas Funcionales" [style="rounded,filled", fillcolor=khaki];
+  "4.2 Entregables" [style="rounded,filled", fillcolor=khaki];
+
+  "Proyecto DisaApp" -> "1.0 Gestión del Proyecto";
+  "Proyecto DisaApp" -> "2.0 Diseño de la App";
+  "Proyecto DisaApp" -> "3.0 Desarrollo Prototipo";
+  "Proyecto DisaApp" -> "4.0 Pruebas y Entrega";
+
+  "1.0 Gestión del Proyecto" -> "1.1 Planificación Inicial";
+  "1.0 Gestión del Proyecto" -> "1.2 Documentación";
+
+  "2.0 Diseño de la App" -> "2.1 Diseño UI";
+  "2.0 Diseño de la App" -> "2.2 Diseño UX";
+
+  "3.0 Desarrollo Prototipo" -> "3.1 Configuración";
+  "3.0 Desarrollo Prototipo" -> "3.2 Desarrollo Auth";
+
+  "4.0 Pruebas y Entrega" -> "4.1 Pruebas Funcionales";
+  "4.0 Pruebas y Entrega" -> "4.2 Entregables";
+}
